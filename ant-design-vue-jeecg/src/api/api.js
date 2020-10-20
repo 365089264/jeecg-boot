@@ -106,7 +106,8 @@ const getVisitInfo = (params)=>getAction("/sys/visitInfo",params);
 
 // 根据部门主键查询用户信息
 const queryUserByDepId = (params)=>getAction("/sys/user/queryUserByDepId",params);
-
+//审核/批准公司
+const approveCompany = (params)=>putAction("/apprentice/appShixiCompany/approve",params);
 // 查询用户角色表里的所有信息
 // const queryUserRoleMap = (params)=>getAction("/sys/user/queryUserRoleMap",params);
 // 重复校验
@@ -137,6 +138,7 @@ export {
   getUserList,
   queryall,
   frozenBatch,
+  approveCompany,
   checkOnlyUser,
   changePassword,
   getPermissionList,
