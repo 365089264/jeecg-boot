@@ -26,11 +26,11 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus" >新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('实习公司')">导出</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
+          <a-menu-item key="1" @click="batchDel" v-has="'company:delete'"><a-icon type="delete" />删除</a-menu-item>
         </a-menu>
         <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
       </a-dropdown>
@@ -78,32 +78,20 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
-
+          <a v-if="record.status==0" @click="handleEdit(record)" >编辑</a>
           <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="handleDetail(record)">详情</a>
-              </a-menu-item>
-              <a-menu-item v-if="record.status==0">
-                <a-popconfirm title="确定审批吗?" @confirm="() => handleApprove(record.id,1)">
-                  <a>审批</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item v-if="record.status==1">
-                <a-popconfirm title="确定批准吗?" @confirm="() => handleApprove(record.id,2)">
-                  <a>批准</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <a @click="handleDetail(record)" >详情</a>
+          <a-divider type="vertical" />
+          <a-popconfirm v-if="record.status==0" title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+            <a>删除</a>
+          </a-popconfirm>
+          <a-divider type="vertical" />
+          <a-popconfirm v-if="record.status==0" v-has="'company:approve1'" title="确定审批吗?" @confirm="() => handleApprove(record.id,1)">
+            <a>审批</a>
+          </a-popconfirm>
+          <a-popconfirm  v-if="record.status==1" v-has="'company:approve2'" title="确定批准吗?" @confirm="() => handleApprove(record.id,2)">
+            <a>批准</a>
+          </a-popconfirm>
         </span>
 
       </a-table>
@@ -132,6 +120,7 @@
     data () {
       return {
         description: '实习公司管理页面',
+        queryParam: {companyName:this.$route.query.companyName},
         // 表头
         columns: [
           {

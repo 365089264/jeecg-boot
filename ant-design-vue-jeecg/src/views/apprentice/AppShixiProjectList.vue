@@ -98,6 +98,11 @@
             下载
           </a-button>
         </template>
+         <template slot="companySlot" slot-scope="text">
+          <router-link :to="{ path: '/apprentice/appShixiCompanyList?companyName='+text }">
+            {{ text }}
+          </router-link>
+        </template>
 
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
@@ -113,6 +118,21 @@
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
                   <a>删除</a>
                 </a-popconfirm>
+              </a-menu-item>
+               <a-menu-item>
+                <a @click="handleDetail(record)">学生自评</a>
+              </a-menu-item>
+                  <a-menu-item>
+                <a @click="handleDetail(record)">组内互评</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a @click="handleDetail(record)">学校导师点评</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a @click="handleDetail(record)">企业导师点评</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a @click="handleDetail(record)">业主评价</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -161,7 +181,8 @@
           {
             title:'实习企业',
             align:"center",
-            dataIndex: 'companyName'
+            dataIndex: 'companyName',
+            scopedSlots: {customRender: 'companySlot'}
           },
           {
             title:'开始时间',

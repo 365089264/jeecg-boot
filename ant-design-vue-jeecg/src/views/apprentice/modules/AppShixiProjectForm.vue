@@ -31,7 +31,7 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="企业导师" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['companyMentor']" placeholder="请输入企业导师"></a-input>
+              <a-input  v-decorator="['companyMentor']" placeholder="请输入企业导师"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -46,8 +46,9 @@
             </a-form-item>
           </a-col>
           <a-col :span="24">
-            <a-form-item label="实习组长" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-form-item label="实习组长" :labelCol="labelCol"  :wrapperCol="wrapperCol">
               <j-popup
+                :disabled="isDisabledAuth('projectleader')"
                 v-decorator="['leader']"
                 :trigger-change="true"
                 org-fields="leader"
@@ -72,6 +73,7 @@
   import { validateDuplicateValue } from '@/utils/util'
   import JFormContainer from '@/components/jeecg/JFormContainer'
   import JDate from '@/components/jeecg/JDate'  
+  import { disabledAuthFilter } from "@/utils/authFilter"
 
   export default {
     name: 'AppShixiProjectForm',
@@ -145,6 +147,9 @@
       this.showFlowData();
     },
     methods: {
+      isDisabledAuth(code){
+        return disabledAuthFilter(code);
+      },
       add () {
         this.edit({});
       },

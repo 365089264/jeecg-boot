@@ -174,20 +174,12 @@ public class AppShixiCompanyController extends JeecgController<AppShixiCompany, 
 		 try {
 			 String ids = jsonObject.getString("ids");
 			 String status = jsonObject.getString("status");
-			 LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-			 if(("xizhuren".equals(sysUser.getPost())&&"1".equals(status))||("fuzhuren".equals(sysUser.getPost())&&"0".equals(status)))
-			 {
-				 String[] arr = ids.split(",");
-				 for (String id : arr) {
-					 if(oConvertUtils.isNotEmpty(id)) {
-						 this.appShixiCompanyService.update(new AppShixiCompany().setStatus(Integer.parseInt(status)),
-								 new UpdateWrapper<AppShixiCompany>().lambda().eq(AppShixiCompany::getId,id));
-					 }
+			 String[] arr = ids.split(",");
+			 for (String id : arr) {
+				 if(oConvertUtils.isNotEmpty(id)) {
+					 this.appShixiCompanyService.update(new AppShixiCompany().setStatus(Integer.parseInt(status)),
+							 new UpdateWrapper<AppShixiCompany>().lambda().eq(AppShixiCompany::getId,id));
 				 }
-			 }
-			 else{
-				 result.error500("您不具备审批权限！");
-				 return result;
 			 }
 		 } catch (Exception e) {
 			 log.error(e.getMessage(), e);
